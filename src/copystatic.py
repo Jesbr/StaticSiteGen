@@ -1,6 +1,9 @@
 import os
 import shutil
 
+from htmlnode import HTMLNode
+from markdown_blocks import markdown_to_html_node
+
 
 def copy_files_recursive(source_dir_path, dest_dir_path):
     if not os.path.exists(dest_dir_path):
