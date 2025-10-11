@@ -1,6 +1,17 @@
 import os
 from markdown_blocks import markdown_to_html_node
+from pathlib import Path
 
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    for filename in os.listdir(dir_path_content):
+        from_path = os.path.join(dir_path_content, filename)
+        dest_path = os.path.join(dest_dir_path, filename)
+        if os.path.isfile(from_path):
+            dest_path = Path(dest_path).with_suffix(".html")
+            generate_page(from_path, template_path, dest_path)
+        else:
+            generate_pages_recursive(from_path, template_path, dest_path)
 
 def generate_page(from_path, template_path, dest_path):
     print(f" * {from_path} {template_path} -> {dest_path}")
@@ -32,38 +43,3 @@ def extract_title(md):
         if line.startswith("# "):
             return line[2:]
     raise ValueError("no title found")
-
-
-#def extract_title(markdown):
-#    for line in markdown.splitlines():
-#        if line.strip().startswith('# '):
-#            return line.strip()[2:].strip()
-#    raise ValueError("No H1 header found in the markdown.")
-
-#def generate_page(from_path, template_path, dest_path):
-#    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
-
-    # Read markdown content
-#    with open(from_path, 'r', encoding='utf-8') as f:
-#        markdown_content = f.read()
-
-    # Read template content
-#    with open(template_path, 'r', encoding='utf-8') as f:
-#        template_content = f.read()
-    
-    # Convert markdown to HTML
-#    html_node = markdown_to_html_node(markdown_content)
-#    html_content = html_node.to_html()
-
-    # Extract title
-#    title = extract_title(markdown_content)
-
-    # Replace placeholders in template
-#    final_html = template_content.replace("{{ Title }}", title).replace("{{ Content }}", html_content)
-
-    # Ensure destination directory exists
-#    os.makedirs(os.path.dirname(dest_path), exist_ok=True)
-
-    # Write final HTML to destination path
-#    with open(dest_path, 'w', encoding='utf-8') as f:
-#        f.write(final_html)
